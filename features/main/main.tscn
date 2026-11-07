@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bm030cxgjmooy"]
+
+[ext_resource type="Texture2D" uid="uid://b4tqmx511t13g" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0029.png" id="2_infng"]
+[ext_resource type="Texture2D" uid="uid://dg2g3edkrf60b" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0033.png" id="3_ykynh"]
+[ext_resource type="Texture2D" uid="uid://pjhl77v0yw8w" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0036.png" id="4_sxeqg"]
+[ext_resource type="Texture2D" uid="uid://bjhudj5sug0hl" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0088.png" id="5_qpalj"]
+
+[node name="Main" type="Node2D" unique_id=310830065]
+
+[node name="Tile0029" type="Sprite2D" parent="." unique_id=1144661129]
+position = Vector2(427, 101)
+texture = ExtResource("2_infng")
+
+[node name="Tile0033" type="Sprite2D" parent="." unique_id=185906354]
+position = Vector2(285, 231)
+texture = ExtResource("3_ykynh")
+
+[node name="Tile0036" type="Sprite2D" parent="." unique_id=1887712047]
+position = Vector2(51, 156)
+texture = ExtResource("4_sxeqg")
+
+[node name="Tile0088" type="Sprite2D" parent="." unique_id=1509076188]
+position = Vector2(62, 63)
+texture = ExtResource("5_qpalj")
