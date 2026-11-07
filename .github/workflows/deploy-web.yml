@@ -6,9 +6,9 @@ on:
   workflow_dispatch: {}
 
 env:
-  GODOT_VERSION: 4.5.1-stable
-  GODOT_VERSION_DOTTED: 4.5.1.stable
-  ITCH_TARGET: parchnipp/breadline
+  GODOT_VERSION: 4.7.2-stable
+  GODOT_VERSION_DOTTED: 4.7.2.stable
+  ITCH_TARGET: parchnipp/shiftcrawler
   ITCH_CHANNEL: html5
 
 jobs:
