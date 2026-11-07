@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b4tqmx511t13g" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0029.png" id="2_infng"]
 [ext_resource type="Texture2D" uid="uid://dg2g3edkrf60b" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0033.png" id="3_ykynh"]
 [ext_resource type="Texture2D" uid="uid://pjhl77v0yw8w" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0036.png" id="4_sxeqg"]
+[ext_resource type="PackedScene" uid="uid://dbcagk71jqnip" path="res://features/map/tilelayer.tscn" id="5_infng"]
 [ext_resource type="Texture2D" uid="uid://bjhudj5sug0hl" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0088.png" id="5_qpalj"]
 
 [node name="Main" type="Node2D" unique_id=310830065]
@@ -22,3 +23,5 @@ texture = ExtResource("4_sxeqg")
 [node name="Tile0088" type="Sprite2D" parent="." unique_id=1509076188]
 position = Vector2(62, 63)
 texture = ExtResource("5_qpalj")
+
+[node name="Tilelayer" parent="." unique_id=1936327388 instance=ExtResource("5_infng")]
