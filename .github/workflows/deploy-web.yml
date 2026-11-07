@@ -1,0 +1,76 @@
+name: Deploy Web build to itch.io
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  GODOT_VERSION: 4.5.1-stable
+  GODOT_VERSION_DOTTED: 4.5.1.stable
+  ITCH_TARGET: parchnipp/breadline
+  ITCH_CHANNEL: html5
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Linux runtime deps for Godot binary
+        run: sudo apt-get update && sudo apt-get install -y libfontconfig1 libxcursor1 libxinerama1 libxi6 libxrandr2 libgl1
+
+      - name: Cache Godot engine + export templates
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot/Godot
+            ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION_DOTTED }}
+          key: godot-${{ env.GODOT_VERSION }}
+
+      - name: Download Godot engine
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot
+          curl -fL -o ~/godot/godot.zip \
+            "https://github.com/godotengine/godot-builds/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip"
+          unzip -q ~/godot/godot.zip -d ~/godot
+          mv "$HOME/godot/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64" ~/godot/Godot
+          chmod +x ~/godot/Godot
+
+      - name: Download export templates
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates
+          curl -fL -o /tmp/templates.tpz \
+            "https://github.com/godotengine/godot-builds/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_export_templates.tpz"
+          unzip -q /tmp/templates.tpz -d /tmp/godot_templates
+          mv /tmp/godot_templates/templates \
+            "$HOME/.local/share/godot/export_templates/${{ env.GODOT_VERSION_DOTTED }}"
+
+      - name: Prime import / class-name cache
+        run: ~/godot/Godot --headless --editor --path . --quit-after 200
+
+      - name: Export Web build
+        run: |
+          mkdir -p web
+          ~/godot/Godot --headless --path . --export-release "Web" web/index.html
+
+      - name: Sanity-check export output
+        run: test -s web/index.html && test -s web/index.wasm && test -s web/index.pck
+
+      - name: Install butler
+        run: |
+          curl -fL -o /tmp/butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          unzip -q /tmp/butler.zip -d /tmp/butler
+          chmod +x /tmp/butler/butler
+          echo "/tmp/butler" >> "$GITHUB_PATH"
+
+      - name: Push to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          butler push web "${{ env.ITCH_TARGET }}:${{ env.ITCH_CHANNEL }}" \
+            --userversion "$(date +%Y.%m.%d)-${GITHUB_SHA::7}"
