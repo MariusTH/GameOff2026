@@ -4,9 +4,9 @@ extends Node2D
 
 const CLEAR_COLOR := Color("#a0a0a0")
 
-@export var level_size := Vector2i(100, 100)
+@export var level_size := Vector2i(150, 150)
 @export var rooms_size := Vector2i(10, 14)
-@export var max_rooms := 15
+@export var max_rooms := 5
 
 @onready var level_tile_map_layer: TileMapLayer = $floor
 # Called when the node enters the scene tree for the first time.
@@ -17,23 +17,51 @@ func _ready() -> void:
 
 func _generate() -> void:
 	level_tile_map_layer.clear()
-	for v in _generate_data():
-		level_tile_map_layer.set_cell(v, 0, Vector2i.ZERO, 0)
+	level_tile_map_layer.set_cells_terrain_connect(_generate_data(), 0, 0)
 
-func _generate_data() -> Array:
+func _generate_data() -> Array[Vector2i]:
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 	
-	var start := Vector2i(rng.randi_range(0, level_size.x), level_size.y)
+	var start := Vector2i(rng.randi_range(0, 2), level_size.y)
 	var end := Vector2i(rng.randi_range(0, level_size.x), 0)
 	
-	# Add path kinda drunken between start and end, then follow path, and then select X more to go along.
-	# This will give us a path from start to end, and also room size, and in this selected areas 
-	# we just "grow" out tumors on the path for cool rooms
-	var floor = [start, end]
-	return floor
+	var grid = {}
+	
+	grid[start] = 1;
+	var row = level_size.y;
+	var last = start
+	# This gives us the path
+	while row != 0:
+		var dir = rng.randi_range(0,2) - 1
+		if dir + last.x < 0 || dir + last.x > level_size.x:
+			dir = 0
+		if grid.get(Vector2i(last.x + dir, row)):
+			dir = 0
+		if dir == 0:
+			row = row - 1
+		last = Vector2i(last.x + dir, row)
+		grid[last] = 1
+	
+	# Generate some rooms
+	var base_path = grid.keys()
+	var dist = base_path.size() / max_rooms
+	for i in max_rooms - 1:
+		var traversal = rng.randi_range(1,4)
+		var halfway_point = ((dist - traversal) / 2) * max_rooms
+		var p = base_path[halfway_point]
+		var room_area = Rect2i(p, Vector2i(rng.randi_range(4, (dist - traversal) / 2), rng.randi_range(4, (dist - traversal) / 2)))
+		for xra in range(room_area.size.x):
+			for yra in range(room_area.size.y):
+				grid[Vector2i(xra + room_area.position.x - (room_area.size.x / 2), yra + room_area.position.y - (room_area.size.y / 2) )] = 1
+	for p in base_path:
+		for i in range(3):
+			for j in range(3):
+				grid[Vector2i(p.x + i - 1, p.y + j - 1)] = 1
+	return grid.keys()
 
-
+func _get_area_vecs() -> Array[Vector2i]:
+	return []
 func _get_random_room(rng: RandomNumberGenerator) -> Rect2:
 	var rw = rng.randi_range(rooms_size.x, rooms_size.y)
 	var rh = rng.randi_range(rooms_size.x, rooms_size.y)
