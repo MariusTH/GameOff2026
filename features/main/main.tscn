@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://pjhl77v0yw8w" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0036.png" id="4_sxeqg"]
 [ext_resource type="PackedScene" uid="uid://dbcagk71jqnip" path="res://features/map/tilelayer.tscn" id="5_infng"]
 [ext_resource type="Texture2D" uid="uid://bjhudj5sug0hl" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0088.png" id="5_qpalj"]
+[ext_resource type="PackedScene" uid="uid://dsnrnk7yb71ik" path="res://features/actor/actor.tscn" id="6_ykynh"]
 
 [node name="Main" type="Node2D" unique_id=310830065]
 
@@ -25,3 +26,9 @@ position = Vector2(62, 63)
 texture = ExtResource("5_qpalj")
 
 [node name="Tilelayer" parent="." unique_id=1936327388 instance=ExtResource("5_infng")]
+
+[node name="Actor" parent="." unique_id=563928789 instance=ExtResource("6_ykynh")]
+is_player = true
+
+[node name="Actor2" parent="." unique_id=326971319 instance=ExtResource("6_ykynh")]
+position = Vector2(32, 32)
