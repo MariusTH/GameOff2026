@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dsnrnk7yb71ik"]
+
+[ext_resource type="Script" uid="uid://d2avqch4rwjxp" path="res://features/actor/actor.gd" id="1_je5ca"]
+[ext_resource type="Texture2D" uid="uid://cm1ry72lcxn2s" path="res://assets/kenney_tiny-dungeon/Tilemap/tilemap_packed.png" id="2_ynt2l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1qa5v"]
+size = Vector2(16, 16)
+
+[node name="Actor" type="Node2D" unique_id=563928789]
+script = ExtResource("1_je5ca")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1911116989]
+position = Vector2(8, 8)
+texture = ExtResource("2_ynt2l")
+hframes = 12
+vframes = 11
+frame = 84
+
+[node name="Area2D" type="Area2D" parent="." unique_id=17070579]
+position = Vector2(8, 8)
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1216342848]
+shape = SubResource("RectangleShape2D_1qa5v")
