@@ -8,7 +8,9 @@ const HALF_TILE_SIZE: int = TILE_SIZE / 2
 const HALF_TILE_SIZE_VECTOR: Vector2 = Vector2(HALF_TILE_SIZE, HALF_TILE_SIZE)
 
 @export var is_player: bool
+@export var move_interval := 0.15
 
+var move_cd := 0.0
 var _raycast: RayCast2D
 
 @onready var area_2d: Area2D = $Area2D
@@ -57,6 +59,7 @@ func _do_raycast(direction: Vector2i, length: int) -> RayCastResult:
 		result.colliding = true
 		result.collision_point = _raycast.get_collision_point()
 		var shape := _raycast.get_collider()
+		print(shape)
 		if shape is Area2D:
 			var actor = shape.get_parent()
 			if (actor is Actor):
@@ -66,15 +69,23 @@ func _do_raycast(direction: Vector2i, length: int) -> RayCastResult:
 
 	return result
 
+func _process(delta: float) -> void:
+	move_cd -= delta
+	if move_cd <= 0.0 && move():
+		move_cd = move_interval
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func move() -> bool:
 	if (!is_player):
-		return
-	if (event.is_action_pressed("ui_up")):
-		try_move(Vector2i.UP)
-	if (event.is_action_pressed("ui_down")):
-		try_move(Vector2i.DOWN)
-	if (event.is_action_pressed("ui_left")):
-		try_move(Vector2i.LEFT)
-	if (event.is_action_pressed("ui_right")):
-		try_move(Vector2i.RIGHT)
+		return false
+	var dir: Vector2i = Vector2i.ZERO
+	if (Input.is_action_pressed("ui_up")):
+		dir = Vector2i.UP
+	if (Input.is_action_pressed("ui_down")):
+		dir = Vector2i.DOWN
+	if (Input.is_action_pressed("ui_left")):
+		dir = Vector2i.LEFT
+	if (Input.is_action_pressed("ui_right")):
+		dir = Vector2i.RIGHT
+	if dir != Vector2i.ZERO:
+		return try_move(dir)
+	return false

@@ -8,23 +8,28 @@ const CLEAR_COLOR := Color("#a0a0a0")
 @export var rooms_size := Vector2i(10, 14)
 @export var max_rooms := 5
 
+@onready var player:Node2D = $"../Actor"
+@onready var camera:Camera2D = $"../Camera2D"
 @onready var level_tile_map_layer: TileMapLayer = $floor
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(CLEAR_COLOR)
-	_generate() # apparently not a good idea if rooms become to big, keep small for now
-	pass # Replace with function body.
-
-func _generate() -> void:
-	level_tile_map_layer.clear()
-	level_tile_map_layer.set_cells_terrain_connect(_generate_data(), 0, 0)
-
-func _generate_data() -> Array[Vector2i]:
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 	
-	var start := Vector2i(rng.randi_range(0, 2), level_size.y)
-	var end := Vector2i(rng.randi_range(0, level_size.x), 0)
+	var start := Vector2i(rng.randi_range(-5, 5) + (level_size.x / 2), level_size.y)
+	_generate(start, rng) # apparently not a good idea if rooms become to big, keep small for now
+	player.global_position = Vector2(start.x * 16, start.y * 16)
+	camera.add_child(player)
+	camera.set_target(player)
+	
+
+func _generate(start: Vector2i, rng: RandomNumberGenerator) -> void:
+	level_tile_map_layer.clear()
+	var cells := _generate_data(start, rng)
+	level_tile_map_layer.set_cells_terrain_connect(cells, 0, 0)
+
+func _generate_data(start: Vector2i, rng: RandomNumberGenerator) -> Array[Vector2i]:
 	
 	var grid = {}
 	
@@ -58,7 +63,9 @@ func _generate_data() -> Array[Vector2i]:
 		for i in range(3):
 			for j in range(3):
 				grid[Vector2i(p.x + i - 1, p.y + j - 1)] = 1
-	return grid.keys()
+	var cells: Array[Vector2i] = []
+	cells.assign(grid.keys())
+	return cells
 
 func _get_area_vecs() -> Array[Vector2i]:
 	return []

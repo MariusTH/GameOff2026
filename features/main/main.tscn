@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dbcagk71jqnip" path="res://features/map/tilelayer.tscn" id="5_infng"]
 [ext_resource type="Texture2D" uid="uid://bjhudj5sug0hl" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0088.png" id="5_qpalj"]
 [ext_resource type="PackedScene" uid="uid://dsnrnk7yb71ik" path="res://features/actor/actor.tscn" id="6_ykynh"]
+[ext_resource type="Script" uid="uid://c8ae27ovhgmla" path="res://features/main/camera.gd" id="7_sxeqg"]
 
 [node name="Main" type="Node2D" unique_id=310830065]
 
@@ -32,3 +33,6 @@ is_player = true
 
 [node name="Actor2" parent="." unique_id=326971319 instance=ExtResource("6_ykynh")]
 position = Vector2(32, 32)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=363394683]
+script = ExtResource("7_sxeqg")
