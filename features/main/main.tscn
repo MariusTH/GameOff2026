@@ -27,6 +27,7 @@ position = Vector2(62, 63)
 texture = ExtResource("5_qpalj")
 
 [node name="Tilelayer" parent="." unique_id=1936327388 instance=ExtResource("5_infng")]
+enemy_scene = ExtResource("6_ykynh")
 
 [node name="Actor" parent="." unique_id=563928789 instance=ExtResource("6_ykynh")]
 is_player = true

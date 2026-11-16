@@ -74,9 +74,42 @@ func _process(delta: float) -> void:
 	if move_cd <= 0.0 && move():
 		move_cd = move_interval
 
+func _get_level() -> LevelGenerator:
+	return get_tree().get_first_node_in_group("level") as LevelGenerator
+
 func move() -> bool:
 	if (!is_player):
+		return _ai_move()
+	return _player_move()
+
+func _get_player() -> Actor: 
+	for c in get_tree().current_scene.get_children():
+		if c is Actor and c.is_player:
+			return c
+	return null
+
+func _ai_move() -> bool:
+	var player = _get_player()
+	var level = _get_level()
+	if !player or !level:
 		return false
+	
+	var path: Array[Vector2] = level.generate_path_between(global_position, player.global_position)
+	if path.size() < 2:
+		return false
+	
+	var delta := path[1] - path[0]
+	var dir: Vector2i = Vector2i.ZERO
+	if absf(delta.x) > absf(delta.y):
+		dir = Vector2i.RIGHT if delta.x > 0 else Vector2i.LEFT
+	else:
+		dir = Vector2i.DOWN if delta.y > 0 else Vector2i.UP
+	if dir != Vector2i.ZERO:
+		return try_move(dir)
+		
+	return false
+	
+func _player_move() -> bool:
 	var dir: Vector2i = Vector2i.ZERO
 	if (Input.is_action_pressed("ui_up")):
 		dir = Vector2i.UP
