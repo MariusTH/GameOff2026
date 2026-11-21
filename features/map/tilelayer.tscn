@@ -270,5 +270,5 @@ sources/1 = SubResource("TileSetAtlasSource_al0mj")
 script = ExtResource("1_t1ftr")
 
 [node name="floor" type="TileMapLayer" parent="." unique_id=1697277976]
-position = Vector2(2, -4)
+position = Vector2(-8, -8)
 tile_set = SubResource("TileSet_exbt0")

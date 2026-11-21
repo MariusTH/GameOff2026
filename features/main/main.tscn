@@ -1,39 +1,7 @@
 [gd_scene format=3 uid="uid://bm030cxgjmooy"]
 
-[ext_resource type="Texture2D" uid="uid://b4tqmx511t13g" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0029.png" id="2_infng"]
-[ext_resource type="Texture2D" uid="uid://dg2g3edkrf60b" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0033.png" id="3_ykynh"]
-[ext_resource type="Texture2D" uid="uid://pjhl77v0yw8w" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0036.png" id="4_sxeqg"]
-[ext_resource type="PackedScene" uid="uid://dbcagk71jqnip" path="res://features/map/tilelayer.tscn" id="5_infng"]
-[ext_resource type="Texture2D" uid="uid://bjhudj5sug0hl" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0088.png" id="5_qpalj"]
-[ext_resource type="PackedScene" uid="uid://dsnrnk7yb71ik" path="res://features/actor/actor.tscn" id="6_ykynh"]
-[ext_resource type="Script" uid="uid://c8ae27ovhgmla" path="res://features/main/camera.gd" id="7_sxeqg"]
+[ext_resource type="PackedScene" uid="uid://bqls08myj8ip0" path="res://features/game/game.tscn" id="4_7o138"]
 
 [node name="Main" type="Node2D" unique_id=310830065]
 
-[node name="Tile0029" type="Sprite2D" parent="." unique_id=1144661129]
-position = Vector2(427, 101)
-texture = ExtResource("2_infng")
-
-[node name="Tile0033" type="Sprite2D" parent="." unique_id=185906354]
-position = Vector2(285, 231)
-texture = ExtResource("3_ykynh")
-
-[node name="Tile0036" type="Sprite2D" parent="." unique_id=1887712047]
-position = Vector2(51, 156)
-texture = ExtResource("4_sxeqg")
-
-[node name="Tile0088" type="Sprite2D" parent="." unique_id=1509076188]
-position = Vector2(62, 63)
-texture = ExtResource("5_qpalj")
-
-[node name="Tilelayer" parent="." unique_id=1936327388 instance=ExtResource("5_infng")]
-enemy_scene = ExtResource("6_ykynh")
-
-[node name="Actor" parent="." unique_id=563928789 instance=ExtResource("6_ykynh")]
-is_player = true
-
-[node name="Actor2" parent="." unique_id=326971319 instance=ExtResource("6_ykynh")]
-position = Vector2(32, 32)
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=363394683]
-script = ExtResource("7_sxeqg")
+[node name="Game" parent="." unique_id=951009686 instance=ExtResource("4_7o138")]

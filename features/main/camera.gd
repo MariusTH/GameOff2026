@@ -10,14 +10,18 @@ var target: Node2D
 var zoom_index := DEFAULT_ZOOM_INDEX
 var free_look := false
 
+
 func set_target(new_target: Node2D) -> void:
 	target = new_target
 	free_look = false
 	if target:
 		global_position = target.global_position
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_zoom()
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -27,8 +31,10 @@ func _process(delta: float) -> void:
 	else:
 		global_position = target.global_position
 
+
 func _zoom():
 	zoom = Vector2i.ONE * ZOOM_LEVELS[zoom_index]
+
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -38,5 +44,5 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			KEY_MINUS:
 				zoom_index = clampi(zoom_index - 1, 0, ZOOM_LEVELS.size() - 1)
 			KEY_TAB:
-				free_look != free_look
+				free_look = !free_look
 		_zoom()

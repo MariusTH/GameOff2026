@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bqls08myj8ip0"]
+
+[ext_resource type="Script" uid="uid://contd4hnlsbuv" path="res://features/game/game.gd" id="1_1j583"]
+[ext_resource type="PackedScene" uid="uid://dbcagk71jqnip" path="res://features/map/tilelayer.tscn" id="2_sy8jn"]
+[ext_resource type="Script" uid="uid://c8ae27ovhgmla" path="res://features/main/camera.gd" id="3_sy8jn"]
+
+[node name="Game" type="Node2D" unique_id=951009686]
+script = ExtResource("1_1j583")
+
+[node name="Tilelayer" parent="." unique_id=1936327388 instance=ExtResource("2_sy8jn")]
+
+[node name="ActorLayer" type="Node2D" parent="." unique_id=745664682]
+unique_name_in_owner = true
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=458404671]
+unique_name_in_owner = true
+script = ExtResource("3_sy8jn")
